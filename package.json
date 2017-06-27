@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --quiet & http-server -c-1 -p 8081",
+    "dev": "webpack",
+    "release": "webpack –config webpack.config.js --env.pro"
   },
   "repository": {
     "type": "git",
