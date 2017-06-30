@@ -1,8 +1,6 @@
-var getCalendarStr = require('./getCalendarStr');
+import {getCalendarStr} from './getCalendarStr';
 
 var mainEle = document.getElementById('main');
 var today = new Date();
 
-// console.log(getCalendarStr(1, new Date()));
-
-mainEle.innerHTML = getCalendarStr(1,today);
+mainEle.innerHTML = getCalendarStr(2,today);

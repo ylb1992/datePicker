@@ -1,4 +1,4 @@
-function substitute(str, o, regexp) {
+export function substitute(str, o, regexp) {
 	var substituteReg = /\\?\{([^{}]+)\}/g;
 	if (typeof str !== 'string' || !o) {
 		return str;
@@ -10,5 +10,3 @@ function substitute(str, o, regexp) {
 		return (o[name] === undefined) ? '' : o[name];
 	});
 }
-
-module.exports = substitute;

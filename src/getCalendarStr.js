@@ -1,6 +1,6 @@
-const TMP = require('./template');
-var filled = require('./dateTools/filled');
-var substitute = require('./substitute');
+import {TMP} from './template';
+import {filled} from './dateTools/filled';
+import {substitute} from './substitute';
 
 /**
  * @param count{Number} numbers of month
@@ -127,4 +127,4 @@ function maxCell(count, date) {
 
 }
 
-module.exports = getCalendarStr;
+export {getCalendarStr}
