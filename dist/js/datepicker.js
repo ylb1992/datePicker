@@ -448,18 +448,15 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 var TMP = exports.TMP = {
-	weekHeadTmp: '<th class="{week_cls}">{week_name}</th>',
+	weekHeadTmp: "<th class=\"{week_cls}\">{week_name}</th>",
 
-	dayTmp: '' + '<td data-date="{date}" class="dayItem j_dayItem {disabled}">' + '<a class="dayNum" href="javascript:;">{day}</a>' + '{dayDomStr}' + '</td>',
+	dayTmp: "\n\t\t\t<td data-date=\"{date}\" class=\"dayItem j_dayItem {disabled}\">\n\t\t\t\t <a class=\"dayNum\" href=\"javascript:;\">{day}</a>\n\t\t\t\t {dayDomStr}\n\t\t\t</td>",
 
-	bodyTmp: '<tr>{calday_row}</tr>',
+	bodyTmp: "<tr>{calday_row}</tr>",
 
-	tableTmp: '' + '<table class="calendarTable">' + '<thead>' + '<tr>{head_template}</tr>' + '</thead>' + '<tbody>' + '{body_template}' + '</tbody>' + '</table>',
+	tableTmp: "\n\t\t\t<table class=\"calendarTable\">\n\t\t\t\t<thead>\n\t\t\t\t\t<tr>{head_template}</tr>\n\t\t\t\t</thead>\n\t\t\t\t<tbody>\n\t\t\t\t\t{body_template}\n\t\t\t\t</tbody>\n\t\t\t</table>\n\t\t\t",
 
-	dateTmp: '' + '<div class="tableWrap">' + '{table_template}' + '</div>'
-
-	// export {TMP};
-
+	dateTmp: "\n\t\t\t<div class=\"tableWrap\">\n\t\t\t\t{table_template}\n\t\t\t</div>\n\t\t\t"
 };
 
 /***/ }),
