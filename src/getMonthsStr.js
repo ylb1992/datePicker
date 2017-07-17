@@ -10,7 +10,7 @@ import {substitute} from './substitute';
  *
  * @return tmp datePicker Dom str
  */
-function getCalendarStr(count, date) {
+function getMonthsStr(count, date) {
 	if (typeof count === 'undefined' || isNaN(parseInt(count)) || parseInt(count) > 10) {
 		count = 1;
 	}
@@ -30,13 +30,13 @@ function getCalendarStr(count, date) {
 
 function getCalendarBody(count, date) {
 	let bodyTmp = '',
-		daysArr = [],
-		cYear = date.getFullYear(),
-		cMonth = date.getMonth(),
-		rows = 0;
+		  daysArr = [],
+		  cYear = date.getFullYear(),
+		  cMonth = date.getMonth(),
+		  rows = 0;
 
 	let firstDays = new Date(cYear, cMonth, 1).getDay(), // 当月第一天是周几
-		totalDays = new Date(cYear, cMonth + 1, 0).getDate(); // 当月一共多少天
+		  totalDays = new Date(cYear, cMonth + 1, 0).getDate(); // 当月一共多少天
 
 	for (; firstDays--;) { // 日期数组中属于前一个月的日期用0占位
 		daysArr.push(0);
@@ -130,4 +130,4 @@ function maxCell(count, date) {
 
 }
 
-export {getCalendarStr}
+export {getMonthsStr}

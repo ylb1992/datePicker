@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/static/js/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,7 +71,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 // Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(3)(function(){
+module.exports = !__webpack_require__(5)(function(){
   return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
 
@@ -85,13 +85,69 @@ module.exports = function(it){
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.substitute = substitute;
+/**
+ * Substitutes keywords in a string using an object/array.
+ * Removes undefined keywords and ignores escaped keywords.
+ *
+ * @method substitute
+ * @param {String} str template string
+ * @param {Object} o json data
+ * @param {RegExp} [regexp] to match a piece of template string
+ */
+function substitute(str, o, regexp) {
+	var substituteReg = /\\?\{([^{}]+)\}/g;
+	if (typeof str !== 'string' || !o) {
+		return str;
+	}
+	return str.replace(regexp || substituteReg, function (match, name) {
+		if (match.charAt(0) === '\\') {
+			return match.slice(1);
+		}
+		return o[name] === undefined ? '' : o[name];
+	});
+}
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var TMP = exports.TMP = {
+	calendarTmp: "\n\t\t<div id=\"{bounding_box_id}\" class=\"ui_datePicker\">\n\t\t\t<div class=\"calendar-container\">\n\t\t\t\t<div class=\"content-box\">\n\t\t\t\t\t<div class=\"arrow\">\n\t\t\t\t\t\t<span class=\"close-btn {delegate_click}\" title=\"\u5173\u95ED\">X</span>\n\t\t\t\t\t\t<span class=\"prev-year {delegate_click}\" title=\"\u4E0A\u4E00\u5E74\">&lt;&lt;</span>\n\t\t\t\t\t\t<span class=\"prev-month {delegate_click}\" title=\"\u4E0A\u6708\">&lt;</span>\n\t\t\t\t\t\t<span class=\"next-month {delegate_click}\" title=\"\u4E0B\u6708\">&gt;</span>\n\t\t\t\t\t\t<span class=\"next-year {delegate_click}\" title=\"\u4E0B\u4E00\u5E74\">&gt;&gt;</span>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"date-box\">{date_template}</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>",
+	weekHeadTmp: "<th class=\"{week_cls}\">{week_name}</th>",
+
+	dayTmp: "\n\t\t<td data-date=\"{date}\" class=\"dayItem j_dayItem {disabled}\">\n\t\t\t <a class=\"dayNum\" href=\"javascript:;\">{day}</a>\n\t\t\t{dayDomStr}\n\t\t</td>\n\t\t",
+
+	bodyTmp: "<tr>{calday_row}</tr>",
+
+	tableTmp: "\n\t\t\t<table class=\"calendarTable\">\n\t\t\t\t<thead>\n\t\t\t\t\t<tr>{head_template}</tr>\n\t\t\t\t</thead>\n\t\t\t\t<tbody>\n\t\t\t\t\t{body_template}\n\t\t\t\t</tbody>\n\t\t\t</table>\n\t\t\t",
+
+	dateTmp: "\n\t\t\t<div class=\"tableWrap\">\n\t\t\t\t{table_template}\n\t\t\t</div>\n\t\t\t"
+};
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports) {
 
 var core = module.exports = {version: '2.4.0'};
 if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports) {
 
 module.exports = function(exec){
@@ -103,7 +159,7 @@ module.exports = function(exec){
 };
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -112,7 +168,7 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
 if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var anObject       = __webpack_require__(16)
@@ -133,7 +189,7 @@ exports.f = __webpack_require__(0) ? Object.defineProperty : function defineProp
 };
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -142,13 +198,13 @@ exports.f = __webpack_require__(0) ? Object.defineProperty : function defineProp
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.getCalendarStr = undefined;
+exports.getMonthsStr = undefined;
 
-var _template = __webpack_require__(12);
+var _template = __webpack_require__(3);
 
-var _filled = __webpack_require__(9);
+var _filled = __webpack_require__(11);
 
-var _substitute = __webpack_require__(11);
+var _substitute = __webpack_require__(2);
 
 /**
  * 获取日历的dom字符串
@@ -157,7 +213,7 @@ var _substitute = __webpack_require__(11);
  *
  * @return tmp datePicker Dom str
  */
-function getCalendarStr(count, date) {
+function getMonthsStr(count, date) {
 	if (typeof count === 'undefined' || isNaN(parseInt(count)) || parseInt(count) > 10) {
 		count = 1;
 	}
@@ -269,10 +325,10 @@ function maxCell(count, date) {
 	return Math.max.apply(null, aCell);
 }
 
-exports.getCalendarStr = getCalendarStr;
+exports.getMonthsStr = getMonthsStr;
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -287,7 +343,7 @@ exports.default = function (instance, Constructor) {
 };
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -320,7 +376,7 @@ exports.default = function () {
 }();
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -342,21 +398,25 @@ function filled(v) {
 }
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _classCallCheck2 = __webpack_require__(7);
+var _classCallCheck2 = __webpack_require__(9);
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-var _createClass2 = __webpack_require__(8);
+var _createClass2 = __webpack_require__(10);
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
-var _getCalendarStr = __webpack_require__(6);
+var _getMonthsStr = __webpack_require__(8);
+
+var _substitute = __webpack_require__(2);
+
+var _template = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -379,17 +439,34 @@ var DatePicker = function () {
 	(0, _createClass3.default)(DatePicker, [{
 		key: '_init',
 		value: function _init() {
+			this._setUniqueId(); // 设置唯一标识
 			this._renderUI();
+		}
+	}, {
+		key: '_setUniqueId',
+		value: function _setUniqueId() {
+			var uniqueId = new Date().getTime().toString(); // 简单的取时间戳作为唯一ID
+			this._datePickerId = 'datePicker-' + uniqueId;
+			this._delegateClickClassName = 'delegate-click-' + uniqueId;
+			this._triggerNodeClassName = 'trigger-node-' + uniqueId;
+			return this;
 		}
 	}, {
 		key: '_renderUI',
 		value: function _renderUI() {
+			var tmpObj = {};
+			var datePickerStr = '';
+			tmpObj['delegate_click'] = this._delegateClickClassName;
+			tmpObj['bounding_box_id'] = this._datePickerId;
+			tmpObj['date_template'] = (0, _getMonthsStr.getMonthsStr)(this.opt.count, this.opt.date);
+			datePickerStr = (0, _substitute.substitute)(_template.TMP.calendarTmp, tmpObj);
+
 			// 如果设置了container属性，则认为是静态日历，否则认为是弹出式日历
 			// let container = this.opt.container ? this.opt.container ? 'body';
 			if (this.opt.container) {
-				document.getElementById(this.opt.container).innerHTML += (0, _getCalendarStr.getCalendarStr)(this.opt.count, this.opt.date);
+				document.getElementById(this.opt.container).innerHTML += datePickerStr;
 			} else {
-				document.body.innerHTML += (0, _getCalendarStr.getCalendarStr)(this.opt.count, this.opt.date);
+				document.body.innerHTML += datePickerStr;
 			}
 		}
 	}]);
@@ -405,61 +482,6 @@ datePicker();
 // module.exports = datePicker;
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.substitute = substitute;
-/**
- * Substitutes keywords in a string using an object/array.
- * Removes undefined keywords and ignores escaped keywords.
- *
- * @method substitute
- * @param {String} str template string
- * @param {Object} o json data
- * @param {RegExp} [regexp] to match a piece of template string
- */
-function substitute(str, o, regexp) {
-	var substituteReg = /\\?\{([^{}]+)\}/g;
-	if (typeof str !== 'string' || !o) {
-		return str;
-	}
-	return str.replace(regexp || substituteReg, function (match, name) {
-		if (match.charAt(0) === '\\') {
-			return match.slice(1);
-		}
-		return o[name] === undefined ? '' : o[name];
-	});
-}
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var TMP = exports.TMP = {
-	weekHeadTmp: "<th class=\"{week_cls}\">{week_name}</th>",
-
-	dayTmp: "\n\t\t\t<td data-date=\"{date}\" class=\"dayItem j_dayItem {disabled}\">\n\t\t\t\t <a class=\"dayNum\" href=\"javascript:;\">{day}</a>\n\t\t\t\t {dayDomStr}\n\t\t\t</td>",
-
-	bodyTmp: "<tr>{calday_row}</tr>",
-
-	tableTmp: "\n\t\t\t<table class=\"calendarTable\">\n\t\t\t\t<thead>\n\t\t\t\t\t<tr>{head_template}</tr>\n\t\t\t\t</thead>\n\t\t\t\t<tbody>\n\t\t\t\t\t{body_template}\n\t\t\t\t</tbody>\n\t\t\t</table>\n\t\t\t",
-
-	dateTmp: "\n\t\t\t<div class=\"tableWrap\">\n\t\t\t\t{table_template}\n\t\t\t</div>\n\t\t\t"
-};
-
-/***/ }),
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -470,7 +492,7 @@ module.exports = { "default": __webpack_require__(14), __esModule: true };
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(24);
-var $Object = __webpack_require__(2).Object;
+var $Object = __webpack_require__(4).Object;
 module.exports = function defineProperty(it, key, desc){
   return $Object.defineProperty(it, key, desc);
 };
@@ -524,7 +546,7 @@ module.exports = function(fn, that, length){
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(1)
-  , document = __webpack_require__(4).document
+  , document = __webpack_require__(6).document
   // in old IE typeof document.createElement is 'object'
   , is = isObject(document) && isObject(document.createElement);
 module.exports = function(it){
@@ -535,8 +557,8 @@ module.exports = function(it){
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global    = __webpack_require__(4)
-  , core      = __webpack_require__(2)
+var global    = __webpack_require__(6)
+  , core      = __webpack_require__(4)
   , ctx       = __webpack_require__(17)
   , hide      = __webpack_require__(20)
   , PROTOTYPE = 'prototype';
@@ -601,7 +623,7 @@ module.exports = $export;
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP         = __webpack_require__(5)
+var dP         = __webpack_require__(7)
   , createDesc = __webpack_require__(22);
 module.exports = __webpack_require__(0) ? function(object, key, value){
   return dP.f(object, key, createDesc(1, value));
@@ -614,7 +636,7 @@ module.exports = __webpack_require__(0) ? function(object, key, value){
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(0) && !__webpack_require__(3)(function(){
+module.exports = !__webpack_require__(0) && !__webpack_require__(5)(function(){
   return Object.defineProperty(__webpack_require__(18)('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
 
@@ -654,7 +676,7 @@ module.exports = function(it, S){
 
 var $export = __webpack_require__(19);
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !__webpack_require__(0), 'Object', {defineProperty: __webpack_require__(5).f});
+$export($export.S + $export.F * !__webpack_require__(0), 'Object', {defineProperty: __webpack_require__(7).f});
 
 /***/ })
 /******/ ]);
