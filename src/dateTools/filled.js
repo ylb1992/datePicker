@@ -6,5 +6,5 @@
  * @return {String} 补0后的字符串
  */
 export function filled(v) {
-	return String(v).replace(/^(\d)$/, '0$1');
+    return String(v).replace(/^(\d)$/, '0$1');
 }

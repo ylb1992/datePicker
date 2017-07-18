@@ -84,7 +84,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 exports.Calendar = undefined;
 
@@ -105,94 +105,94 @@ var _template = __webpack_require__(4);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var DatePicker = function () {
-	function DatePicker() {
-		var opt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-		(0, _classCallCheck3.default)(this, DatePicker);
+    function DatePicker() {
+        var opt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        (0, _classCallCheck3.default)(this, DatePicker);
 
-		this.opt = {
-			date: opt.date || new Date(), // 日历的初始化日期
-			count: opt.count || 2, // 日历个数，默认为2
-			container: opt.container || null, // 放置日期的容器，非弹出式日历必填
-			triggerNode: opt.triggerNode || '', // 弹出式日历 开始日期触发节点 必填，支持单日历
-			finalTriggerNode: opt.finalTriggerNode || '' // 弹出式日期 结束日期触发节点
-		};
+        this.opt = {
+            date: opt.date || new Date(), // 日历的初始化日期
+            count: opt.count || 2, // 日历个数，默认为2
+            container: opt.container || null, // 放置日期的容器，非弹出式日历必填
+            triggerNode: opt.triggerNode || '', // 弹出式日历 开始日期触发节点 必填，支持单日历
+            finalTriggerNode: opt.finalTriggerNode || '' // 弹出式日期 结束日期触发节点
+        };
 
-		this._init();
-	}
+        this._init();
+    }
 
-	(0, _createClass3.default)(DatePicker, [{
-		key: '_init',
-		value: function _init() {
-			this._setUniqueId(); // 设置唯一标识
-			this._renderUI();
-		}
-	}, {
-		key: '_setUniqueId',
-		value: function _setUniqueId() {
-			var uniqueId = new Date().getTime().toString(); // 简单的取时间戳作为唯一ID
-			this._datePickerId = 'datePicker-' + uniqueId;
-			this._delegateClickClassName = 'delegate-click-' + uniqueId;
-			this._triggerNodeClassName = 'trigger-node-' + uniqueId;
-			return this;
-		}
-	}, {
-		key: '_renderUI',
-		value: function _renderUI() {
-			var tmpObj = {};
-			var datePickerStr = '';
-			tmpObj['delegate_click'] = this._delegateClickClassName;
-			tmpObj['bounding_box_id'] = this._datePickerId;
-			tmpObj['date_template'] = (0, _getMonthsStr.getMonthsStr)(this.opt.count, this.opt.date);
-			datePickerStr = (0, _substitute.substitute)(_template.TMP.calendarTmp, tmpObj);
+    (0, _createClass3.default)(DatePicker, [{
+        key: '_init',
+        value: function _init() {
+            this._setUniqueId(); // 设置唯一标识
+            this._renderUI();
+        }
+    }, {
+        key: '_setUniqueId',
+        value: function _setUniqueId() {
+            var uniqueId = new Date().getTime().toString(); // 简单的取时间戳作为唯一ID
+            this._datePickerId = 'datePicker-' + uniqueId;
+            this._delegateClickClassName = 'delegate-click-' + uniqueId;
+            this._triggerNodeClassName = 'trigger-node-' + uniqueId;
+            return this;
+        }
+    }, {
+        key: '_renderUI',
+        value: function _renderUI() {
+            var tmpObj = {};
+            var datePickerStr = '';
+            tmpObj['delegate_click'] = this._delegateClickClassName;
+            tmpObj['bounding_box_id'] = this._datePickerId;
+            tmpObj['date_template'] = (0, _getMonthsStr.getMonthsStr)(this.opt.count, this.opt.date);
+            datePickerStr = (0, _substitute.substitute)(_template.TMP.calendarTmp, tmpObj);
 
-			if (this.opt.container) {
-				document.getElementById(this.opt.container).innerHTML += datePickerStr;
-			} else {
-				document.body.innerHTML += datePickerStr;
-			}
+            if (this.opt.container) {
+                document.getElementById(this.opt.container).innerHTML += datePickerStr;
+            } else {
+                document.body.innerHTML += datePickerStr;
+            }
 
-			this.wrapEle = document.getElementById(this._datePickerId);
-			console.log(this.wrapEle);
+            this.wrapEle = document.getElementById(this._datePickerId);
+            console.log(this.wrapEle);
 
-			// 渲染失败，直接退出
-			if (!this.wrapEle) return;
+            // 渲染失败，直接退出
+            if (!this.wrapEle) return;
 
-			// 如果设置了container属性，则认为是静态日历，否则认为是弹出式日历
-			if (!this.opt.container) {
-				this.wrapEle.style.position = 'absolute';
-				this.wrapEle.style.top = '-9999px';
-				this._initTriggerNode();
-			} else {
-				this.wrapEle.style.position = 'relative';
-			}
-		}
-	}, {
-		key: '_initTriggerNode',
-		value: function _initTriggerNode() {
-			var triggerNode = document.getElementById(this.opt.triggerNode),
-			    // 开始日期的触发元素
-			finalTriggerNode = document.getElementById(this.opt.finalTriggerNode); // 结束日期的触发元素,可以没有
+            // 如果设置了container属性，则认为是静态日历，否则认为是弹出式日历
+            if (!this.opt.container) {
+                this.wrapEle.style.position = 'absolute';
+                this.wrapEle.style.top = '-9999px';
+                this._initTriggerNode();
+            } else {
+                this.wrapEle.style.position = 'relative';
+            }
+        }
+    }, {
+        key: '_initTriggerNode',
+        value: function _initTriggerNode() {
+            var triggerNode = document.getElementById(this.opt.triggerNode),
+                // 开始日期的触发元素
+            finalTriggerNode = document.getElementById(this.opt.finalTriggerNode); // 结束日期的触发元素,可以没有
 
-			if (this._isInput(triggerNode)) {
-				triggerNode.className += ' ' + this._triggerNodeClassName;
-				triggerNode.setAttribute('autocomplete', 'off');
-			}
+            if (this._isInput(triggerNode)) {
+                triggerNode.className += ' ' + this._triggerNodeClassName;
+                triggerNode.setAttribute('autocomplete', 'off');
+            }
 
-			if (this._isInput(finalTriggerNode)) {
-				finalTriggerNode.className += ' ' + this._triggerNodeClassName;
-				finalTriggerNode.setAttribute('autocomplete', 'off');
-			}
-		}
-	}, {
-		key: '_isInput',
-		value: function _isInput(v) {
-			if (!v) {
-				return false;
-			}
-			return v.tagName.toUpperCase() === 'INPUT' && (v.getAttribute('type') === 'text' || v.getAttribute('type') === 'date');
-		}
-	}]);
-	return DatePicker;
+            if (this._isInput(finalTriggerNode)) {
+                finalTriggerNode.className += ' ' + this._triggerNodeClassName;
+                finalTriggerNode.setAttribute('autocomplete', 'off');
+            }
+        }
+    }, {
+        key: '_isInput',
+        value: function _isInput(v) {
+            if (!v) {
+                return false;
+            }
+            return v.tagName.toUpperCase() === 'INPUT' && (v.getAttribute('type') === 'text' || v.getAttribute('type') === 'date');
+        }
+    }]);
+    return DatePicker;
 }();
 
 // datePicker();
@@ -226,7 +226,7 @@ module.exports = function(it){
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 exports.substitute = substitute;
 /**
@@ -239,16 +239,16 @@ exports.substitute = substitute;
  * @param {RegExp} [regexp] to match a piece of template string
  */
 function substitute(str, o, regexp) {
-	var substituteReg = /\\?\{([^{}]+)\}/g;
-	if (typeof str !== 'string' || !o) {
-		return str;
-	}
-	return str.replace(regexp || substituteReg, function (match, name) {
-		if (match.charAt(0) === '\\') {
-			return match.slice(1);
-		}
-		return o[name] === undefined ? '' : o[name];
-	});
+    var substituteReg = /\\?\{([^{}]+)\}/g;
+    if (typeof str !== 'string' || !o) {
+        return str;
+    }
+    return str.replace(regexp || substituteReg, function (match, name) {
+        if (match.charAt(0) === '\\') {
+            return match.slice(1);
+        }
+        return o[name] === undefined ? '' : o[name];
+    });
 }
 
 /***/ }),
@@ -259,19 +259,19 @@ function substitute(str, o, regexp) {
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 var TMP = exports.TMP = {
-	calendarTmp: "\n\t\t<div id=\"{bounding_box_id}\" class=\"ui_datePicker\">\n\t\t\t<div class=\"calendar-container\">\n\t\t\t\t<div class=\"content-box\">\n\t\t\t\t\t<div class=\"arrow\">\n\t\t\t\t\t\t<span class=\"close-btn {delegate_click}\" title=\"\u5173\u95ED\">X</span>\n\t\t\t\t\t\t<span class=\"prev-year {delegate_click}\" title=\"\u4E0A\u4E00\u5E74\">&lt;&lt;</span>\n\t\t\t\t\t\t<span class=\"prev-month {delegate_click}\" title=\"\u4E0A\u6708\">&lt;</span>\n\t\t\t\t\t\t<span class=\"next-month {delegate_click}\" title=\"\u4E0B\u6708\">&gt;</span>\n\t\t\t\t\t\t<span class=\"next-year {delegate_click}\" title=\"\u4E0B\u4E00\u5E74\">&gt;&gt;</span>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"date-box\">{date_template}</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>",
-	weekHeadTmp: "<th class=\"{week_cls}\">{week_name}</th>",
+    calendarTmp: "\n        <div id=\"{bounding_box_id}\" class=\"ui_datePicker\">\n            <div class=\"calendar-container\">\n                <div class=\"content-box\">\n                    <div class=\"arrow\">\n                        <span class=\"close-btn {delegate_click}\" title=\"\u5173\u95ED\">X</span>\n                        <span class=\"prev-year {delegate_click}\" title=\"\u4E0A\u4E00\u5E74\">&lt;&lt;</span>\n                        <span class=\"prev-month {delegate_click}\" title=\"\u4E0A\u6708\">&lt;</span>\n                        <span class=\"next-month {delegate_click}\" title=\"\u4E0B\u6708\">&gt;</span>\n                        <span class=\"next-year {delegate_click}\" title=\"\u4E0B\u4E00\u5E74\">&gt;&gt;</span>\n                    </div>\n                    <div class=\"date-box\">{date_template}</div>\n                </div>\n            </div>\n        </div>",
+    weekHeadTmp: "<th class=\"{week_cls}\">{week_name}</th>",
 
-	dayTmp: "\n\t\t<td data-date=\"{date}\" class=\"dayItem j_dayItem {disabled}\">\n\t\t\t <span class=\"{date_class}\" href=\"javascript:;\">{day}</span>\n\t\t\t{dayDomStr}\n\t\t</td>\n\t\t",
+    dayTmp: "\n        <td data-date=\"{date}\" class=\"dayItem j_dayItem {disabled}\">\n             <span class=\"{date_class}\" href=\"javascript:;\">{day}</span>\n            {dayDomStr}\n        </td>\n        ",
 
-	bodyTmp: "<tr>{calday_row}</tr>",
+    bodyTmp: "<tr>{calday_row}</tr>",
 
-	tableTmp: "\n\t\t\t<table class=\"calendarTable\">\n\t\t\t\t<thead>\n\t\t\t\t\t<tr>{head_template}</tr>\n\t\t\t\t</thead>\n\t\t\t\t<tbody>\n\t\t\t\t\t{body_template}\n\t\t\t\t</tbody>\n\t\t\t</table>\n\t\t\t",
+    tableTmp: "\n            <table class=\"calendarTable\">\n                <thead>\n                    <tr>{head_template}</tr>\n                </thead>\n                <tbody>\n                    {body_template}\n                </tbody>\n            </table>\n            ",
 
-	dateTmp: "\n\t\t\t<div class=\"inner\">\n\t\t\t\t<h4>{month}</h4>\n\t\t\t\t{table_template}\n\t\t\t</div>\n\t\t\t"
+    dateTmp: "\n            <div class=\"inner\">\n                <h4>{month}</h4>\n                {table_template}\n            </div>\n            "
 };
 
 /***/ }),
