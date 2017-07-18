@@ -140,7 +140,7 @@ var TMP = exports.TMP = {
 	calendarTmp: "\n\t\t<div id=\"{bounding_box_id}\" class=\"ui_datePicker\">\n\t\t\t<div class=\"calendar-container\">\n\t\t\t\t<div class=\"content-box\">\n\t\t\t\t\t<div class=\"arrow\">\n\t\t\t\t\t\t<span class=\"close-btn {delegate_click}\" title=\"\u5173\u95ED\">X</span>\n\t\t\t\t\t\t<span class=\"prev-year {delegate_click}\" title=\"\u4E0A\u4E00\u5E74\">&lt;&lt;</span>\n\t\t\t\t\t\t<span class=\"prev-month {delegate_click}\" title=\"\u4E0A\u6708\">&lt;</span>\n\t\t\t\t\t\t<span class=\"next-month {delegate_click}\" title=\"\u4E0B\u6708\">&gt;</span>\n\t\t\t\t\t\t<span class=\"next-year {delegate_click}\" title=\"\u4E0B\u4E00\u5E74\">&gt;&gt;</span>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"date-box\">{date_template}</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>",
 	weekHeadTmp: "<th class=\"{week_cls}\">{week_name}</th>",
 
-	dayTmp: "\n\t\t<td data-date=\"{date}\" class=\"dayItem j_dayItem {disabled}\">\n\t\t\t <a class=\"dayNum\" href=\"javascript:;\">{day}</a>\n\t\t\t{dayDomStr}\n\t\t</td>\n\t\t",
+	dayTmp: "\n\t\t<td data-date=\"{date}\" class=\"dayItem j_dayItem {disabled}\">\n\t\t\t <span class=\"{date_class}\" href=\"javascript:;\">{day}</span>\n\t\t\t{dayDomStr}\n\t\t</td>\n\t\t",
 
 	bodyTmp: "<tr>{calday_row}</tr>",
 
@@ -214,6 +214,8 @@ var _template = __webpack_require__(3);
 
 var _filled = __webpack_require__(11);
 
+var _stringify = __webpack_require__(26);
+
 var _substitute = __webpack_require__(2);
 
 /**
@@ -274,7 +276,8 @@ function getCalendarBody(count, date) {
             caldayRow += (0, _substitute.substitute)(_template.TMP.dayTmp, {
                 'day': days,
                 'date': thisDay,
-                'disabled': getDisableStatus(thisDay, date) // TODO 判断不可选择日期
+                'disabled': getDisableStatus(thisDay, date), // TODO 判断不可选择日期
+                'date_class': getDateClass(thisDay)
                 // 'dayDomStr': getDisableStatus(thisDay) === 'disabled' ? '' : getDaysStr(filled(days))
             });
         }
@@ -335,6 +338,10 @@ function maxCell(count, date) {
     }
 
     return Math.max.apply(null, aCell);
+}
+
+function getDateClass(v) {
+    return v === (0, _stringify.stringify)(new Date()) ? 'today' : 'dayNum';
 }
 
 exports.getMonthsStr = getMonthsStr;
@@ -696,6 +703,32 @@ module.exports = function(it, S){
 var $export = __webpack_require__(19);
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 $export($export.S + $export.F * !__webpack_require__(0), 'Object', {defineProperty: __webpack_require__(7).f});
+
+/***/ }),
+/* 25 */,
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.stringify = stringify;
+
+var _filled = __webpack_require__(11);
+
+/**
+ * 将日期对象转为日期字符串
+ *
+ * @method stringify
+ * @param  {Date} v 日期对象
+ * @return {String} 日期字符串
+ */
+function stringify(v) {
+  return v.getFullYear() + '-' + (0, _filled.filled)(v.getMonth() * 1 + 1) + '-' + (0, _filled.filled)(v.getDate());
+}
 
 /***/ })
 /******/ ]);

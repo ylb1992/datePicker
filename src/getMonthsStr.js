@@ -1,5 +1,6 @@
 import {TMP} from './template';
 import {filled} from './dateTools/filled';
+import {stringify} from './dateTools/stringify';
 import {substitute} from './substitute';
 
 
@@ -60,6 +61,7 @@ function getCalendarBody(count, date) {
                 'day': days,
                 'date': thisDay,
                 'disabled': getDisableStatus(thisDay, date), // TODO 判断不可选择日期
+                'date_class': getDateClass(thisDay),
                 // 'dayDomStr': getDisableStatus(thisDay) === 'disabled' ? '' : getDaysStr(filled(days))
             });
         }
@@ -130,6 +132,10 @@ function maxCell(count, date) {
 
     return Math.max.apply(null, aCell);
 
+}
+
+function getDateClass(v) {
+    return v === stringify(new Date) ? 'today' : 'dayNum';
 }
 
 export {getMonthsStr}

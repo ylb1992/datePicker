@@ -65,9 +65,13 @@
 .ui_datePicker .arrow .next-year {
   right: 6px;
 }
+.ui_datePicker .date-box {
+  font-size: 0;
+}
 .ui_datePicker .inner {
   display: inline-block;
-  margin-top: 15px;
+  border-left: 1px solid #e8e8e8;
+  font-size: 12px;
 }
 .ui_datePicker .inner h4 {
   height: 24px;
@@ -124,5 +128,5 @@
   background: none;
 }
 .ui_datePicker .inner:first-child {
-  border-right: 1px solid #e8e8e8;
+  border-left: none;
 }

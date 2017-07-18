@@ -18,7 +18,7 @@ export const TMP = {
 
 	dayTmp: `
 		<td data-date="{date}" class="dayItem j_dayItem {disabled}">
-			 <a class="dayNum" href="javascript:;">{day}</a>
+			 <span class="{date_class}" href="javascript:;">{day}</span>
 			{dayDomStr}
 		</td>
 		`,
