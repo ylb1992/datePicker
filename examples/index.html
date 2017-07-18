@@ -6,11 +6,14 @@
 </head>
 <body>
 <div id="main" class="main">
+	<input id="startTime" type="text">
+	<input id="endTime" type="text">
 </div>
 <script src="/dist/js/datepicker.js"></script>
 <script>
 	new Datepicker.Calendar({
-		count: 2
+		triggerNode: 'startTime',
+		finalTriggerNode: 'endTime'
 	});
 </script>
 </body>

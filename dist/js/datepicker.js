@@ -73,20 +73,145 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/static/js/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.Calendar = undefined;
+
+var _classCallCheck2 = __webpack_require__(11);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(12);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _getMonthsStr = __webpack_require__(10);
+
+var _substitute = __webpack_require__(3);
+
+var _template = __webpack_require__(4);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DatePicker = function () {
+	function DatePicker() {
+		var opt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+		(0, _classCallCheck3.default)(this, DatePicker);
+
+		this.opt = {
+			date: opt.date || new Date(), // 日历的初始化日期
+			count: opt.count || 2, // 日历个数，默认为2
+			container: opt.container || null, // 放置日期的容器，非弹出式日历必填
+			triggerNode: opt.triggerNode || '', // 弹出式日历 开始日期触发节点 必填，支持单日历
+			finalTriggerNode: opt.finalTriggerNode || '' // 弹出式日期 结束日期触发节点
+		};
+
+		this._init();
+	}
+
+	(0, _createClass3.default)(DatePicker, [{
+		key: '_init',
+		value: function _init() {
+			this._setUniqueId(); // 设置唯一标识
+			this._renderUI();
+		}
+	}, {
+		key: '_setUniqueId',
+		value: function _setUniqueId() {
+			var uniqueId = new Date().getTime().toString(); // 简单的取时间戳作为唯一ID
+			this._datePickerId = 'datePicker-' + uniqueId;
+			this._delegateClickClassName = 'delegate-click-' + uniqueId;
+			this._triggerNodeClassName = 'trigger-node-' + uniqueId;
+			return this;
+		}
+	}, {
+		key: '_renderUI',
+		value: function _renderUI() {
+			var tmpObj = {};
+			var datePickerStr = '';
+			tmpObj['delegate_click'] = this._delegateClickClassName;
+			tmpObj['bounding_box_id'] = this._datePickerId;
+			tmpObj['date_template'] = (0, _getMonthsStr.getMonthsStr)(this.opt.count, this.opt.date);
+			datePickerStr = (0, _substitute.substitute)(_template.TMP.calendarTmp, tmpObj);
+
+			if (this.opt.container) {
+				document.getElementById(this.opt.container).innerHTML += datePickerStr;
+			} else {
+				document.body.innerHTML += datePickerStr;
+			}
+
+			this.wrapEle = document.getElementById(this._datePickerId);
+			console.log(this.wrapEle);
+
+			// 渲染失败，直接退出
+			if (!this.wrapEle) return;
+
+			// 如果设置了container属性，则认为是静态日历，否则认为是弹出式日历
+			if (!this.opt.container) {
+				this.wrapEle.style.position = 'absolute';
+				this.wrapEle.style.top = '-9999px';
+				this._initTriggerNode();
+			} else {
+				this.wrapEle.style.position = 'relative';
+			}
+		}
+	}, {
+		key: '_initTriggerNode',
+		value: function _initTriggerNode() {
+			var triggerNode = document.getElementById(this.opt.triggerNode),
+			    // 开始日期的触发元素
+			finalTriggerNode = document.getElementById(this.opt.finalTriggerNode); // 结束日期的触发元素,可以没有
+
+			if (this._isInput(triggerNode)) {
+				triggerNode.className += ' ' + this._triggerNodeClassName;
+				triggerNode.setAttribute('autocomplete', 'off');
+			}
+
+			if (this._isInput(finalTriggerNode)) {
+				finalTriggerNode.className += ' ' + this._triggerNodeClassName;
+				finalTriggerNode.setAttribute('autocomplete', 'off');
+			}
+		}
+	}, {
+		key: '_isInput',
+		value: function _isInput(v) {
+			if (!v) {
+				return false;
+			}
+			return v.tagName.toUpperCase() === 'INPUT' && (v.getAttribute('type') === 'text' || v.getAttribute('type') === 'date');
+		}
+	}]);
+	return DatePicker;
+}();
+
+// datePicker();
+
+
+exports.Calendar = DatePicker;
+// module.exports = datePicker;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(5)(function(){
+module.exports = !__webpack_require__(7)(function(){
   return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports) {
 
 module.exports = function(it){
@@ -94,7 +219,7 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -127,7 +252,7 @@ function substitute(str, o, regexp) {
 }
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -150,14 +275,36 @@ var TMP = exports.TMP = {
 };
 
 /***/ }),
-/* 4 */
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.filled = filled;
+/**
+ * 数字不足两位前面补0
+ *
+ * @method filled
+ * @param  {Number} v 要补全的数字
+ * @return {String} 补0后的字符串
+ */
+function filled(v) {
+  return String(v).replace(/^(\d)$/, '0$1');
+}
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports) {
 
 var core = module.exports = {version: '2.4.0'};
 if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = function(exec){
@@ -169,7 +316,7 @@ module.exports = function(exec){
 };
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -178,15 +325,15 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
 if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject       = __webpack_require__(16)
-  , IE8_DOM_DEFINE = __webpack_require__(21)
-  , toPrimitive    = __webpack_require__(23)
+var anObject       = __webpack_require__(17)
+  , IE8_DOM_DEFINE = __webpack_require__(22)
+  , toPrimitive    = __webpack_require__(24)
   , dP             = Object.defineProperty;
 
-exports.f = __webpack_require__(0) ? Object.defineProperty : function defineProperty(O, P, Attributes){
+exports.f = __webpack_require__(1) ? Object.defineProperty : function defineProperty(O, P, Attributes){
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
@@ -199,7 +346,7 @@ exports.f = __webpack_require__(0) ? Object.defineProperty : function defineProp
 };
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -210,13 +357,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getMonthsStr = undefined;
 
-var _template = __webpack_require__(3);
+var _template = __webpack_require__(4);
 
-var _filled = __webpack_require__(11);
+var _filled = __webpack_require__(5);
 
-var _stringify = __webpack_require__(26);
+var _stringify = __webpack_require__(13);
 
-var _substitute = __webpack_require__(2);
+var _substitute = __webpack_require__(3);
 
 /**
  * 获取日历的dom字符串
@@ -347,7 +494,7 @@ function getDateClass(v) {
 exports.getMonthsStr = getMonthsStr;
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -362,7 +509,7 @@ exports.default = function (instance, Constructor) {
 };
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -370,7 +517,7 @@ exports.default = function (instance, Constructor) {
 
 exports.__esModule = true;
 
-var _defineProperty = __webpack_require__(13);
+var _defineProperty = __webpack_require__(14);
 
 var _defineProperty2 = _interopRequireDefault(_defineProperty);
 
@@ -395,7 +542,7 @@ exports.default = function () {
 }();
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -404,127 +551,39 @@ exports.default = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.filled = filled;
+exports.stringify = stringify;
+
+var _filled = __webpack_require__(5);
+
 /**
- * 数字不足两位前面补0
+ * 将日期对象转为日期字符串
  *
- * @method filled
- * @param  {Number} v 要补全的数字
- * @return {String} 补0后的字符串
+ * @method stringify
+ * @param  {Date} v 日期对象
+ * @return {String} 日期字符串
  */
-function filled(v) {
-  return String(v).replace(/^(\d)$/, '0$1');
+function stringify(v) {
+  return v.getFullYear() + '-' + (0, _filled.filled)(v.getMonth() * 1 + 1) + '-' + (0, _filled.filled)(v.getDate());
 }
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.Calendar = undefined;
-
-var _classCallCheck2 = __webpack_require__(9);
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = __webpack_require__(10);
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _getMonthsStr = __webpack_require__(8);
-
-var _substitute = __webpack_require__(2);
-
-var _template = __webpack_require__(3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var DatePicker = function () {
-	function DatePicker() {
-		var opt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-		(0, _classCallCheck3.default)(this, DatePicker);
-
-		this.opt = {
-			date: opt.date || new Date(), // 日历的初始化日期
-			count: opt.count || 2, // 日历个数，默认为2
-			container: opt.container || null, // 放置日期的容器，非弹出式日历必填
-			triggerNode: opt.triggerNode || '', // 弹出式日历 开始日期触发节点 必填，支持单日历
-			finalTriggerNode: opt.finalTriggerNode || '' // 弹出式日期 结束日期触发节点
-		};
-
-		this._init();
-	}
-
-	(0, _createClass3.default)(DatePicker, [{
-		key: '_init',
-		value: function _init() {
-			this._setUniqueId(); // 设置唯一标识
-			this._renderUI();
-		}
-	}, {
-		key: '_setUniqueId',
-		value: function _setUniqueId() {
-			var uniqueId = new Date().getTime().toString(); // 简单的取时间戳作为唯一ID
-			this._datePickerId = 'datePicker-' + uniqueId;
-			this._delegateClickClassName = 'delegate-click-' + uniqueId;
-			this._triggerNodeClassName = 'trigger-node-' + uniqueId;
-			return this;
-		}
-	}, {
-		key: '_renderUI',
-		value: function _renderUI() {
-			var tmpObj = {};
-			var datePickerStr = '';
-			tmpObj['delegate_click'] = this._delegateClickClassName;
-			tmpObj['bounding_box_id'] = this._datePickerId;
-			tmpObj['date_template'] = (0, _getMonthsStr.getMonthsStr)(this.opt.count, this.opt.date);
-			datePickerStr = (0, _substitute.substitute)(_template.TMP.calendarTmp, tmpObj);
-
-			// 如果设置了container属性，则认为是静态日历，否则认为是弹出式日历
-			// let container = this.opt.container ? this.opt.container ? 'body';
-			if (this.opt.container) {
-				document.getElementById(this.opt.container).innerHTML += datePickerStr;
-			} else {
-				document.body.innerHTML += datePickerStr;
-			}
-		}
-	}]);
-	return DatePicker;
-}();
-
-// function datePicker() {
-// 	return new DatePicker();
-// }
-
-// datePicker();
-
-
-exports.Calendar = DatePicker;
-// module.exports = datePicker;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__(14), __esModule: true };
 
 /***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(24);
-var $Object = __webpack_require__(4).Object;
+module.exports = { "default": __webpack_require__(15), __esModule: true };
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(25);
+var $Object = __webpack_require__(6).Object;
 module.exports = function defineProperty(it, key, desc){
   return $Object.defineProperty(it, key, desc);
 };
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = function(it){
@@ -533,21 +592,21 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(1);
+var isObject = __webpack_require__(2);
 module.exports = function(it){
   if(!isObject(it))throw TypeError(it + ' is not an object!');
   return it;
 };
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // optional / simple context binding
-var aFunction = __webpack_require__(15);
+var aFunction = __webpack_require__(16);
 module.exports = function(fn, that, length){
   aFunction(fn);
   if(that === undefined)return fn;
@@ -568,11 +627,11 @@ module.exports = function(fn, that, length){
 };
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(1)
-  , document = __webpack_require__(6).document
+var isObject = __webpack_require__(2)
+  , document = __webpack_require__(8).document
   // in old IE typeof document.createElement is 'object'
   , is = isObject(document) && isObject(document.createElement);
 module.exports = function(it){
@@ -580,13 +639,13 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global    = __webpack_require__(6)
-  , core      = __webpack_require__(4)
-  , ctx       = __webpack_require__(17)
-  , hide      = __webpack_require__(20)
+var global    = __webpack_require__(8)
+  , core      = __webpack_require__(6)
+  , ctx       = __webpack_require__(18)
+  , hide      = __webpack_require__(21)
   , PROTOTYPE = 'prototype';
 
 var $export = function(type, name, source){
@@ -646,12 +705,12 @@ $export.R = 128; // real proto method for `library`
 module.exports = $export;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP         = __webpack_require__(7)
-  , createDesc = __webpack_require__(22);
-module.exports = __webpack_require__(0) ? function(object, key, value){
+var dP         = __webpack_require__(9)
+  , createDesc = __webpack_require__(23);
+module.exports = __webpack_require__(1) ? function(object, key, value){
   return dP.f(object, key, createDesc(1, value));
 } : function(object, key, value){
   object[key] = value;
@@ -659,15 +718,15 @@ module.exports = __webpack_require__(0) ? function(object, key, value){
 };
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(0) && !__webpack_require__(5)(function(){
-  return Object.defineProperty(__webpack_require__(18)('div'), 'a', {get: function(){ return 7; }}).a != 7;
+module.exports = !__webpack_require__(1) && !__webpack_require__(7)(function(){
+  return Object.defineProperty(__webpack_require__(19)('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = function(bitmap, value){
@@ -680,11 +739,11 @@ module.exports = function(bitmap, value){
 };
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __webpack_require__(1);
+var isObject = __webpack_require__(2);
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
 module.exports = function(it, S){
@@ -697,38 +756,12 @@ module.exports = function(it, S){
 };
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $export = __webpack_require__(19);
+var $export = __webpack_require__(20);
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !__webpack_require__(0), 'Object', {defineProperty: __webpack_require__(7).f});
-
-/***/ }),
-/* 25 */,
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.stringify = stringify;
-
-var _filled = __webpack_require__(11);
-
-/**
- * 将日期对象转为日期字符串
- *
- * @method stringify
- * @param  {Date} v 日期对象
- * @return {String} 日期字符串
- */
-function stringify(v) {
-  return v.getFullYear() + '-' + (0, _filled.filled)(v.getMonth() * 1 + 1) + '-' + (0, _filled.filled)(v.getDate());
-}
+$export($export.S + $export.F * !__webpack_require__(1), 'Object', {defineProperty: __webpack_require__(9).f});
 
 /***/ })
 /******/ ]);

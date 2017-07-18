@@ -35,20 +35,51 @@ class DatePicker {
 		tmpObj['date_template'] = getMonthsStr(this.opt.count, this.opt.date);
 		datePickerStr = substitute(TMP.calendarTmp, tmpObj);
 
-		// 如果设置了container属性，则认为是静态日历，否则认为是弹出式日历
-		// let container = this.opt.container ? this.opt.container ? 'body';
 		if(this.opt.container) {
 			document.getElementById(this.opt.container).innerHTML += datePickerStr;
 		} else {
 			document.body.innerHTML += datePickerStr;
 		}
 
+		this.wrapEle = document.getElementById(this._datePickerId);
+		console.log(this.wrapEle);
+
+		// 渲染失败，直接退出
+		if(!this.wrapEle) return;
+
+		// 如果设置了container属性，则认为是静态日历，否则认为是弹出式日历
+		if(!this.opt.container) {
+			this.wrapEle.style.position = 'absolute';
+			this.wrapEle.style.top = '-9999px';
+			this._initTriggerNode();
+		} else {
+			this.wrapEle.style.position = 'relative';
+		}
+
+	}
+
+	_initTriggerNode() {
+		const triggerNode = document.getElementById(this.opt.triggerNode), // 开始日期的触发元素
+			  finalTriggerNode = document.getElementById(this.opt.finalTriggerNode); // 结束日期的触发元素,可以没有
+
+		if(this._isInput(triggerNode)) {
+			triggerNode.className += ' ' + this._triggerNodeClassName;
+			triggerNode.setAttribute('autocomplete', 'off');
+		}
+
+		if(this._isInput(finalTriggerNode)) {
+			finalTriggerNode.className += ' ' + this._triggerNodeClassName;
+			finalTriggerNode.setAttribute('autocomplete', 'off');
+		}
+	}
+
+	_isInput(v) {
+		if(!v) {
+			return false
+		}
+		return v.tagName.toUpperCase() === 'INPUT' && (v.getAttribute('type') === 'text' || v.getAttribute('type') === 'date');
 	}
 }
-
-// function datePicker() {
-// 	return new DatePicker();
-// }
 
 // datePicker();
 export { DatePicker as Calendar }
