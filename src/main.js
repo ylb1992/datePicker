@@ -46,10 +46,10 @@ class DatePicker {
 	}
 }
 
-function datePicker() {
-	return new DatePicker();
-}
+// function datePicker() {
+// 	return new DatePicker();
+// }
 
-datePicker();
-// export {datePicker}
+// datePicker();
+export { DatePicker as Calendar }
 // module.exports = datePicker;

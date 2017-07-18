@@ -1,0 +1,128 @@
+/**
+ * 日期区间选择器
+ * @author yanglunbin1992@gmail.com
+ */
+.ui_dateRange .rangeText {
+  margin: 0 5px;
+}
+.ui_dateInput {
+  display: inline-block;
+  position: relative;
+  background: #fff;
+}
+.ui_dateInput .inputText {
+  position: relative;
+  z-index: 2;
+  width: 110px;
+  padding-right: 28px;
+  background: transparent;
+}
+.ui_datePicker {
+  position: absolute;
+  z-index: 2100;
+  background: #fff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  font-size: 13px;
+}
+.ui_datePicker .arrow {
+  position: relative;
+  text-align: center;
+}
+.ui_datePicker .arrow .close-btn {
+  display: none;
+}
+.ui_datePicker .arrow .next-month,
+.ui_datePicker .arrow .prev-month,
+.ui_datePicker .arrow .next-year,
+.ui_datePicker .arrow .prev-year {
+  position: absolute;
+  top: 18px;
+  width: 24px;
+  height: 18px;
+  border: 1px solid #cccccc;
+  border-radius: 2px;
+  color: #aaa;
+  font-size: 12px;
+  line-height: 16px;
+  cursor: pointer;
+}
+.ui_datePicker .arrow .next-month:hover,
+.ui_datePicker .arrow .prev-month:hover,
+.ui_datePicker .arrow .next-year:hover,
+.ui_datePicker .arrow .prev-year:hover {
+  background: #dcdcdc;
+}
+.ui_datePicker .arrow .prev-year {
+  left: 6px;
+}
+.ui_datePicker .arrow .prev-month {
+  left: 34px;
+}
+.ui_datePicker .arrow .next-month {
+  right: 34px;
+}
+.ui_datePicker .arrow .next-year {
+  right: 6px;
+}
+.ui_datePicker .inner {
+  display: inline-block;
+  margin-top: 15px;
+}
+.ui_datePicker .inner h4 {
+  height: 24px;
+  background: #f2f2f2;
+  color: #333;
+  text-align: center;
+  line-height: 24px;
+}
+.ui_datePicker .inner td,
+.ui_datePicker .inner th {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  vertical-align: middle;
+}
+.ui_datePicker .inner th {
+  color: #999;
+  font-size: 12px;
+}
+.ui_datePicker .inner td {
+  color: #666;
+  cursor: pointer;
+}
+.ui_datePicker .inner td:hover {
+  background: #f5f5f5;
+}
+.ui_datePicker .inner .hover {
+  background: #f5f5f5;
+}
+.ui_datePicker .inner .today {
+  color: #fa9627;
+}
+.ui_datePicker .inner .start-date,
+.ui_datePicker .inner .end-date {
+  background: #fa9627;
+  color: #fff;
+}
+.ui_datePicker .inner .start-date:hover,
+.ui_datePicker .inner .end-date:hover {
+  background: #fa9627;
+}
+.ui_datePicker .inner .start-date .today,
+.ui_datePicker .inner .end-date .today {
+  color: #fff;
+}
+.ui_datePicker .inner .selected-range {
+  background: #f5f5f5;
+}
+.ui_datePicker .inner .disabled {
+  color: #bababa;
+  cursor: not-allowed;
+}
+.ui_datePicker .inner .disabled:hover {
+  background: none;
+}
+.ui_datePicker .inner:first-child {
+  border-right: 1px solid #e8e8e8;
+}

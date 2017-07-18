@@ -1,4 +1,14 @@
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["Datepicker"] = factory();
+	else
+		root["Datepicker"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -136,7 +146,7 @@ var TMP = exports.TMP = {
 
 	tableTmp: "\n\t\t\t<table class=\"calendarTable\">\n\t\t\t\t<thead>\n\t\t\t\t\t<tr>{head_template}</tr>\n\t\t\t\t</thead>\n\t\t\t\t<tbody>\n\t\t\t\t\t{body_template}\n\t\t\t\t</tbody>\n\t\t\t</table>\n\t\t\t",
 
-	dateTmp: "\n\t\t\t<div class=\"tableWrap\">\n\t\t\t\t{table_template}\n\t\t\t</div>\n\t\t\t"
+	dateTmp: "\n\t\t\t<div class=\"inner\">\n\t\t\t\t<h4>{month}</h4>\n\t\t\t\t{table_template}\n\t\t\t</div>\n\t\t\t"
 };
 
 /***/ }),
@@ -196,7 +206,7 @@ exports.f = __webpack_require__(0) ? Object.defineProperty : function defineProp
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 exports.getMonthsStr = undefined;
 
@@ -214,115 +224,117 @@ var _substitute = __webpack_require__(2);
  * @return tmp datePicker Dom str
  */
 function getMonthsStr(count, date) {
-	if (typeof count === 'undefined' || isNaN(parseInt(count)) || parseInt(count) > 10) {
-		count = 1;
-	}
+    if (typeof count === 'undefined' || isNaN(parseInt(count)) || parseInt(count) > 10) {
+        count = 1;
+    }
 
-	if (typeof date === 'undefined' || !(date instanceof Date)) {
-		date = new Date();
-	}
+    if (typeof date === 'undefined' || !(date instanceof Date)) {
+        date = new Date();
+    }
 
-	var tmp = '';
+    var tmp = '';
+    var iYear = date.getFullYear(),
+        iMonth = date.getMonth();
+    for (var i = 0; i < count; i++) {
+        tmp += getCalendarBody(count, new Date(iYear, iMonth + i));
+    }
 
-	for (var i = 0; i < count; i++) {
-		tmp += getCalendarBody(count, date);
-	}
-
-	return tmp;
+    return tmp;
 }
 
 function getCalendarBody(count, date) {
-	var bodyTmp = '',
-	    daysArr = [],
-	    cYear = date.getFullYear(),
-	    cMonth = date.getMonth(),
-	    rows = 0;
+    var bodyTmp = '',
+        daysArr = [],
+        cYear = date.getFullYear(),
+        cMonth = date.getMonth(),
+        rows = 0;
 
-	var firstDays = new Date(cYear, cMonth, 1).getDay(),
-	    // 当月第一天是周几
-	totalDays = new Date(cYear, cMonth + 1, 0).getDate(); // 当月一共多少天
+    var firstDays = new Date(cYear, cMonth, 1).getDay(),
+        // 当月第一天是周几
+    totalDays = new Date(cYear, cMonth + 1, 0).getDate(); // 当月一共多少天
 
-	for (; firstDays--;) {
-		// 日期数组中属于前一个月的日期用0占位
-		daysArr.push(0);
-	}
+    for (; firstDays--;) {
+        // 日期数组中属于前一个月的日期用0占位
+        daysArr.push(0);
+    }
 
-	for (var i = 0; i <= totalDays; i++) {
-		daysArr.push(i);
-	}
+    for (var i = 1; i <= totalDays; i++) {
+        daysArr.push(i);
+    }
 
-	daysArr.length = maxCell(count, date);
+    daysArr.length = maxCell(count, date);
 
-	rows = Math.ceil(daysArr.length / 7); // total rows
+    rows = Math.ceil(daysArr.length / 7); // total rows
 
-	for (var _i = 0; _i < rows; _i++) {
-		var caldayRow = '';
-		for (var j = 0; j <= 6; j++) {
-			var days = daysArr[j + 7 * _i] || '';
-			var thisDay = days ? cYear + '-' + (0, _filled.filled)(cMonth + 1) + '-' + (0, _filled.filled)(days) : '';
-			caldayRow += (0, _substitute.substitute)(_template.TMP.dayTmp, {
-				'day': days,
-				'date': thisDay,
-				'disabled': getDisableStatus(thisDay, date) // TODO 判断不可选择日期
-				// 'dayDomStr': getDisableStatus(thisDay) === 'disabled' ? '' : getDaysStr(filled(days))
-			});
-		}
-		bodyTmp += (0, _substitute.substitute)(_template.TMP.bodyTmp, {
-			calday_row: caldayRow
-		});
-	}
+    for (var _i = 0; _i < rows; _i++) {
+        var caldayRow = '';
+        for (var j = 0; j <= 6; j++) {
+            var days = daysArr[j + 7 * _i] || '';
+            var thisDay = days ? cYear + '-' + (0, _filled.filled)(cMonth + 1) + '-' + (0, _filled.filled)(days) : '';
+            caldayRow += (0, _substitute.substitute)(_template.TMP.dayTmp, {
+                'day': days,
+                'date': thisDay,
+                'disabled': getDisableStatus(thisDay, date) // TODO 判断不可选择日期
+                // 'dayDomStr': getDisableStatus(thisDay) === 'disabled' ? '' : getDaysStr(filled(days))
+            });
+        }
+        bodyTmp += (0, _substitute.substitute)(_template.TMP.bodyTmp, {
+            calday_row: caldayRow
+        });
+    }
 
-	var tableTmp = {};
-	tableTmp['head_template'] = getWeekHeadTmp();
-	tableTmp['body_template'] = bodyTmp;
+    var tableTmp = {};
+    tableTmp['head_template'] = getWeekHeadTmp();
+    tableTmp['body_template'] = bodyTmp;
 
-	//single Calendar object
-	var singleCalendarTmp = {};
+    //single Calendar object
+    var singleCalendarTmp = {};
 
-	singleCalendarTmp['table_template'] = (0, _substitute.substitute)(_template.TMP.tableTmp, tableTmp);
-	return (0, _substitute.substitute)(_template.TMP.dateTmp, singleCalendarTmp);
+    singleCalendarTmp['table_template'] = (0, _substitute.substitute)(_template.TMP.tableTmp, tableTmp);
+    singleCalendarTmp['month'] = cYear + '年' + (cMonth + 1) + '月';
+    return (0, _substitute.substitute)(_template.TMP.dateTmp, singleCalendarTmp);
 }
 
 function getDisableStatus(days) {
-	var disabled = '';
-	if (days === '') {
-		disabled = 'disabled';
-	} else {
-		var today = new Date(),
-		    todayStr = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(),
-		    thisDay = new Date(days);
-		if (thisDay.getTime() < new Date(todayStr).getTime()) {
-			disabled = 'disabled';
-		}
-	}
+    var disabled = '';
+    if (days === '') {
+        disabled = 'disabled';
+    } else {
+        var today = new Date(),
+            todayStr = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(),
+            thisDay = new Date(days);
+        if (thisDay.getTime() < new Date(todayStr).getTime()) {
+            disabled = 'disabled';
+        }
+    }
 
-	return disabled;
+    return disabled;
 }
 
 // get week head template
 function getWeekHeadTmp() {
-	var weekHeadStr = '',
-	    weeks = [{ name: '日', cls: 'weekDay sunday' }, { name: '一', cls: 'weekDay' }, { name: '二', cls: 'weekDay' }, { name: '三', cls: 'weekDay' }, { name: '四', cls: 'weekDay' }, { name: '五', cls: 'weekDay' }, { name: '六', cls: 'weekDay saturday' }];
+    var weekHeadStr = '',
+        weeks = [{ name: '日', cls: 'weekDay sunday' }, { name: '一', cls: 'weekDay' }, { name: '二', cls: 'weekDay' }, { name: '三', cls: 'weekDay' }, { name: '四', cls: 'weekDay' }, { name: '五', cls: 'weekDay' }, { name: '六', cls: 'weekDay saturday' }];
 
-	for (var i = 0; i < 7; i++) {
-		weekHeadStr += (0, _substitute.substitute)(_template.TMP.weekHeadTmp, {
-			week_name: weeks[i].name,
-			week_cls: weeks[i].cls
-		});
-	}
-	return weekHeadStr;
+    for (var i = 0; i < 7; i++) {
+        weekHeadStr += (0, _substitute.substitute)(_template.TMP.weekHeadTmp, {
+            week_name: weeks[i].name,
+            week_cls: weeks[i].cls
+        });
+    }
+    return weekHeadStr;
 }
 
 function maxCell(count, date) {
-	var iYear = date.getFullYear(),
-	    iMonth = date.getMonth() + 1,
-	    aCell = [];
+    var iYear = date.getFullYear(),
+        iMonth = date.getMonth() + 1,
+        aCell = [];
 
-	for (var i = 0; i < count; i++) {
-		aCell.push(new Date(iYear, iMonth - 1 + i, 1).getDay() + new Date(iYear, iMonth + i, 0).getDate());
-	}
+    for (var i = 0; i < count; i++) {
+        aCell.push(new Date(iYear, iMonth - 1 + i, 1).getDay() + new Date(iYear, iMonth + i, 0).getDate());
+    }
 
-	return Math.max.apply(null, aCell);
+    return Math.max.apply(null, aCell);
 }
 
 exports.getMonthsStr = getMonthsStr;
@@ -404,6 +416,11 @@ function filled(v) {
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.Calendar = undefined;
+
 var _classCallCheck2 = __webpack_require__(9);
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -473,12 +490,14 @@ var DatePicker = function () {
 	return DatePicker;
 }();
 
-function datePicker() {
-	return new DatePicker();
-}
+// function datePicker() {
+// 	return new DatePicker();
+// }
 
-datePicker();
-// export {datePicker}
+// datePicker();
+
+
+exports.Calendar = DatePicker;
 // module.exports = datePicker;
 
 /***/ }),
@@ -680,3 +699,4 @@ $export($export.S + $export.F * !__webpack_require__(0), 'Object', {defineProper
 
 /***/ })
 /******/ ]);
+});

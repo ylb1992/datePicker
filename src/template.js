@@ -37,7 +37,8 @@ export const TMP = {
 			`,
 
 	dateTmp: `
-			<div class="tableWrap">
+			<div class="inner">
+				<h4>{month}</h4>
 				{table_template}
 			</div>
 			`

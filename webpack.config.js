@@ -41,6 +41,9 @@ module.exports = function(env) {
 			filename: `${name}.js`,
 			path: path.resolve(__dirname, 'dist/js'),
 			publicPath: '/static/js/',
+			library: library,
+			libraryTarget: 'umd',
+
 		},
 
 		plugins: plugins,
