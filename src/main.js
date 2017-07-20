@@ -81,6 +81,4 @@ class DatePicker {
     }
 }
 
-// datePicker();
 export { DatePicker as Calendar }
-// module.exports = datePicker;

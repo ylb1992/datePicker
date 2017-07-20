@@ -18,6 +18,7 @@
   background: transparent;
 }
 .ui_datePicker {
+  display: inline-block;
   position: absolute;
   z-index: 2100;
   background: #fff;

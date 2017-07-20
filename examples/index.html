@@ -5,12 +5,30 @@
     <link rel="stylesheet" type="text/css" href="./datePicker.css">
 </head>
 <body>
-<div id="main" class="main">
+<div id="main" class="main" style="width: 1000px; margin: 0 auto;">
+	<div class="single-calendar">
+		<h3>单个静态日历</h3>
+		<div id="single"></div>
+	</div>
+	<div class="double-calendar" style="margin-top: 20px;">
+		<h4>两个静态日历</h4>
+		<div id="double"></div>
+	</div>
     <input id="startTime" type="text">
     <input id="endTime" type="text">
 </div>
 <script src="/dist/js/datepicker.js"></script>
 <script>
+
+	new Datepicker.Calendar({
+		container: 'single',
+		count: 1
+	});
+
+	new Datepicker.Calendar({
+		container: 'double'
+	});
+
     new Datepicker.Calendar({
         triggerNode: 'startTime',
         finalTriggerNode: 'endTime'
