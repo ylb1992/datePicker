@@ -85,10 +85,12 @@ var _filled = __webpack_require__(1);
 var _substitute = __webpack_require__(3);
 
 /**
+ * 获取日历的dom字符串
  * @param count{Number} numbers of month
  * @param date{Date} init date
+ *
+ * @return tmp datePicker Dom str
  */
-
 function getCalendarStr(count, date) {
 	if (typeof count === 'undefined' || isNaN(parseInt(count)) || parseInt(count) > 10) {
 		count = 1;
@@ -211,11 +213,18 @@ exports.getCalendarStr = getCalendarStr;
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
 exports.filled = filled;
+/**
+ * 数字不足两位前面补0
+ *
+ * @method filled
+ * @param  {Number} v 要补全的数字
+ * @return {String} 补0后的字符串
+ */
 function filled(v) {
-	return String(v).replace(/^(\d)$/, '0$1');
+  return String(v).replace(/^(\d)$/, '0$1');
 }
 
 /***/ }),
@@ -243,6 +252,15 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 exports.substitute = substitute;
+/**
+ * Substitutes keywords in a string using an object/array.
+ * Removes undefined keywords and ignores escaped keywords.
+ *
+ * @method substitute
+ * @param {String} str template string
+ * @param {Object} o json data
+ * @param {RegExp} [regexp] to match a piece of template string
+ */
 function substitute(str, o, regexp) {
 	var substituteReg = /\\?\{([^{}]+)\}/g;
 	if (typeof str !== 'string' || !o) {

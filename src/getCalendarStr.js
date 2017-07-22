@@ -2,11 +2,14 @@ import {TMP} from './template';
 import {filled} from './dateTools/filled';
 import {substitute} from './substitute';
 
+
 /**
+ * 获取日历的dom字符串
  * @param count{Number} numbers of month
  * @param date{Date} init date
+ *
+ * @return tmp datePicker Dom str
  */
-
 function getCalendarStr(count, date) {
 	if (typeof count === 'undefined' || isNaN(parseInt(count)) || parseInt(count) > 10) {
 		count = 1;

@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --quiet & http-server -c-1 -p 8081",
     "dev": "webpack",
+    "dev-watch": "webpack --watch",
     "release": "webpack –config webpack.config.js --env.pro"
   },
   "repository": {
